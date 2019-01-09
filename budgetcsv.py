@@ -1,9 +1,10 @@
 # Author: Kenny Chao
 # Language: Python 
 # Version Supported: 3.7.1
-# First Update: 1/6/2019 (working version)
-# Second Update: 1/7/2019 (added console layout, modularity)
-# Third Update: 1/8/2019 (added ability to update categories, not yet implemented is saving the changes to the file)
+# First Update: 1/6/2019 (Working version)
+# Second Update: 1/7/2019 (Added console layout, modularity)
+# Third Update: 1/8/2019 (Added ability to update categories, not yet implemented is saving the changes to the file)
+# Fourth Update: 1/9/2019 (Added ability to create budget/ expenses for newly created category. Also, added ability to save changes to csv file)
 # Project Name: Excel Sheet Budget Maker in Python
 
 import sys
@@ -62,6 +63,13 @@ def blockSeparator():
 def printNewline():
     print("\n")
 
+def writeToCSV(csvFileName, rowList):
+    with open(csvFileName, 'w', newline = "") as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerows(rowList)
+
+    csvFile.close()
+
 def newBudget():
     Months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     MonthName = input("What month would you like to set a budget for? ")
@@ -94,17 +102,28 @@ def newBudget():
 
     # Create a csv file.
 
-    with open(csvFileName, 'w', newline = "") as csvFile:
-        writer = csv.writer(csvFile)
-        writer.writerows(rowList)
+    writeToCSV(csvFileName, rowList)
 
-    csvFile.close()
-
+#################################################################################################################3
 def validUpdateOption(updateOptions):
     if updateOptions != 1 or updateOptions != 2 or updateOptions != 3:
         print("The option you entered in is not available.")
     else:
         return
+
+def removeCategory(cR, categoryList, budgetList, expenseList, totalList):
+    categoryList.remove(categoryList[cR])
+    budgetList.remove(budgetList[cR])
+    expenseList.remove(expenseList[cR])
+    totalList.remove(totalList[cR])
+
+def newCategory(cA, budgetList, expenseList, totalList):
+    newBudget = int(input("Enter in the budget for %s: " % cA))
+    budgetList.append(newBudget)
+    newExpense = int(input("Enter in the expense for %s: " % cA))
+    expenseList.append(newExpense)
+    newTotal = newBudget - newExpense
+    totalList.append(newTotal)
 
 def reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList):
     # For option 1, remember to check if list is empty or not
@@ -117,29 +136,46 @@ def reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList):
                 print("Category %d: %s" % ((x+1),category))
             blockSeparator()
             categoryRemoval = int(input("Enter in the category you want to remove: "))
-            cR = str(categoryList[categoryRemoval-1])
-            categoryList.remove(cR)
+            cR = categoryRemoval - 1
+            removeCategory(cR, categoryList, budgetList, expenseList, totalList)
+            #cR = str(categoryList[categoryRemoval-1]) # This to make sure that the first line is not included (a.k.a. the "variables")
+            #categoryList.remove(cR)
+            blockSeparator()
         elif categoryChoice == 2:
             cA = input("Enter in the category you would like to add: ")
             categoryList.append(cA)
+            newCategory(cA, budgetList, expenseList, totalList)
+            blockSeparator()
         else: 
             print("%d is an invalid option." % categoryChoice)
             blockSeparator()
     elif updateOptions == 2:
-         print("ho")
+        if len(categoryList) == 0:
+            print("There is no budget that can be updated because no categories exist.")
+        elif len(categoryList) >=1:
+            x = 1
+            for category in categoryList:
+                print("Category %d: %s" % (x, category)) 
+                x += 1
+            budgetChoice = int(input("Choose the category you would like to update the budget for: "))
+            categoryChosen = categoryList[budgetChoice-1]
+            budgetUpdate = int(input("Enter in the new budget for %s: " % categoryChosen))
+            budgetList[budgetChoice-1] = budgetUpdate
+        else:
+            print("Looks like there was a flaw in error checking! Look at updating budget as a start.")
     elif updateOptions == 3:
          print("ho")
     else:
         print("Uh-oh, seems like an error went through.")
 
 def updateOrganizer():
-    fileName = input("Enter in the file you would like to update (Ex. 'January 2019.csv'): ")
-    fileExists = path.exists(fileName)
+    csvFileName = input("Enter in the file you would like to update (Ex. 'January 2019.csv'): ")
+    fileExists = path.exists(csvFileName)
     blockSeparator()
     if fileExists == True:
         updateOptions = int(input("Choose the area you would like to update:\n(1) Categories\n(2) Budget\n(3) Expenses\n"))
         blockSeparator()
-        with open(fileName) as csvFile:
+        with open(csvFileName) as csvFile:
             categoryList = []
             budgetList = []
             expenseList = []
@@ -155,7 +191,12 @@ def updateOrganizer():
                 budgetList.append(list[x+1])
                 expenseList.append(list[x+2])
                 totalList.append(list[x+3])
+        rowList = []
+        rowList.append(["Categories", "Budget", "Expense", "Total"])
         reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList)
+        NumCategories = len(categoryList)
+        fileOrganizer(NumCategories, categoryList, budgetList, expenseList, totalList, rowList)
+        writeToCSV(csvFileName, rowList)
         print(categoryList)
         print(budgetList)
         print(expenseList)
