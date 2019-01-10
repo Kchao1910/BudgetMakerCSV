@@ -153,13 +153,9 @@ def reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList):
             print("%d is an invalid option." % categoryChoice)
             blockSeparator()
     elif updateOptions == 2:
-        if len(categoryList) == 0:
-            print("There is no budget that can be updated because no categories exist.")
-        elif len(categoryList) >=1:
-            x = 1
-            for category in categoryList:
-                print("Category %d: %s" % (x, category)) 
-                x += 1
+        numOfCategories(categoryList)
+        if len(categoryList) >=1:
+            printCategories(categoryList)
             budgetChoice = int(input("Choose the category you would like to update the budget for: "))
             categoryChosen = categoryList[budgetChoice-1]
             budgetUpdate = int(input("Enter in the new budget for %s: " % categoryChosen))
@@ -169,9 +165,29 @@ def reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList):
         else:
             print("Looks like there was a flaw in error checking! Look at updating budget as a start.")
     elif updateOptions == 3:
-         print("ho")
+         numOfCategories(categoryList)
+         if len(categoryList) >= 1:
+            printCategories(categoryList)
+            expenseChoice = int(input("Choose the category you would like to update the expense for: "))
+            categoryChosen = categoryList[expenseChoice-1]
+            expenseUpdate = int(input("Enter in the new expense for %s: " % categoryChosen))
+            expenseList[expenseChoice-1] = expenseUpdate
+            budget = int(budgetList[expenseChoice-1])
+            totalList[expenseChoice-1] = (budget - expenseUpdate)
     else:
         print("Uh-oh, seems like an error went through.")
+
+# Number of categories
+def numOfCategories(categoryList):
+    if len(categoryList) == 0:
+          print("There is no budget that can be updated because no categories exist.")
+
+# print out number of categories
+def printCategories(categoryList):
+    x = 1
+    for category in categoryList:
+        print("Category %d: %s" % (x, category)) 
+        x += 1
 
 # Note that when reading from the csv file contents from list become strings
 def updateOrganizer():
