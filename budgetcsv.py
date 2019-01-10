@@ -136,6 +136,9 @@ def reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList):
                 print("Category %d: %s" % ((x+1),category))
             blockSeparator()
             categoryRemoval = int(input("Enter in the category you want to remove: "))
+            if categoryRemoval < 1 or categoryRemoval > x+1:
+                print("Option chosen must be one of the above category numbers.")
+                sys.exit(0)
             cR = categoryRemoval - 1
             removeCategory(cR, categoryList, budgetList, expenseList, totalList)
             #cR = str(categoryList[categoryRemoval-1]) # This to make sure that the first line is not included (a.k.a. the "variables")
@@ -161,6 +164,8 @@ def reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList):
             categoryChosen = categoryList[budgetChoice-1]
             budgetUpdate = int(input("Enter in the new budget for %s: " % categoryChosen))
             budgetList[budgetChoice-1] = budgetUpdate
+            expense = int(expenseList[budgetChoice-1])
+            totalList[budgetChoice-1] = (budgetUpdate - expense)
         else:
             print("Looks like there was a flaw in error checking! Look at updating budget as a start.")
     elif updateOptions == 3:
@@ -168,6 +173,7 @@ def reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList):
     else:
         print("Uh-oh, seems like an error went through.")
 
+# Note that when reading from the csv file contents from list become strings
 def updateOrganizer():
     csvFileName = input("Enter in the file you would like to update (Ex. 'January 2019.csv'): ")
     fileExists = path.exists(csvFileName)
