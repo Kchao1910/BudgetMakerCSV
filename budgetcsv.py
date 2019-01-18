@@ -214,7 +214,7 @@ def updateOrganizer():
                 expenseList.append(list[x+2])
                 totalList.append(list[x+3])
         rowList = []
-        rowList.append(["Categories", "Budget", "Expense", "Total"])
+        rowList.append(["Categories", "Budget", "Expense", "Total Left"])
         reUpdate(updateOptions, categoryList, budgetList, expenseList, totalList)
         NumCategories = len(categoryList)
         fileOrganizer(NumCategories, categoryList, budgetList, expenseList, totalList, rowList)
@@ -228,20 +228,35 @@ def updateOrganizer():
         print("The file you entered in doesn't exist or cannot be found!")
         blockSeparator()
 
+
+# User can continue re-using the program until as long as the loop condition is true
+def loop(tOrf):
+    cont = input("Enter in 'continue' to keep using the program or 'quit' to exit out: ")
+    if cont == "continue":
+        tOrf = True
+    elif cont == "quit":
+        sys.exit(0)
+    else:
+        print("Invalid input")
+
 ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
 # Things in consideration
 # (1) Would you like to update an existing file or create a new budget?
 # (2) What things would you like to update for "filename"? "Down-down of available options"
 
 
+tOrf = True
+while tOrf == True:
+    blockSeparator()
+    chooseAnOption = int(input("Choose an option (Enter in the number):\n(1) Update an existing budget\n(2) Create a new budget\n"))
+    blockSeparator()
+    if chooseAnOption == 1:
+        updateOrganizer()
+        loop(tOrf)
+    elif chooseAnOption == 2:
+        newBudget()
+        loop(tOrf)
+    else:
+        print("Invalid choice.")
 
-blockSeparator()
-chooseAnOption = int(input("Choose an option (Enter in the number):\n(1) Update an existing budget\n(2) Create a new budget\n"))
-blockSeparator()
-if chooseAnOption == 1:
-    updateOrganizer()
-elif chooseAnOption == 2:
-    newBudget()
-else:
-    print("Invalid choice.")
 
