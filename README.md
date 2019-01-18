@@ -12,7 +12,7 @@ Python (3.7.1 used)
 This console application allows users to either update existing budgets or create new budgets that are saved as csv files. When a user decides to update an existing budget, it is assumed that the file they have chosen was made through this program. The reason for this is due to the way stored data is written to the csv file.<br><br>
 For example.<br>
 |Categories    |Budget|Expenses|Total Left|
-|--------------|-----:|-------:|---------:|
+|---|---:|---:|---:|
 |Groceries     |200   |100     |100       |
 |Rent          |1000  |800     |200       |
 |Transportation|250   |175     |75        |
