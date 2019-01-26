@@ -9,7 +9,7 @@ Python (3.7.1 used)
 # Introduction
 
 ## __Updating Existing Budgets__
-This console application allows users to either update existing budgets or create new budgets that are saved as csv files. When a user decides to update an existing budget, it is assumed that the file they have chosen was made through this program. The reason for this is due to the way stored data is written to the csv file.<br><br>
+This console application allows users to either update existing budgets or create new budgets that are saved as CSV files. When a user decides to update an existing budget, it is assumed that the file they have chosen was made through this program. The reason for this is due to the way stored data is written to the csv file.<br><br>
 For example.<br>
 <table>
     <tr>
@@ -51,7 +51,7 @@ After the user chooses to update an existing budget they will be asked to enter 
 If a user decides to update categories they can either choose to remove or add a category. If a user decides to update a budget or expenses they must enter in the category number they want to update the budget/expenses for. 
 
 ## __Creating New Budgets__
-There are 5 main steps in creating a new budget. First, the user chooses the month they would like to set a budget for. Second, the user enters in the name they would like to save the file as (do not include '.csv' at the end of your file). Third, the user enters in how many categories they would like to set (only postive whole numbers are accepted). Fourth, the user then sets the category name, budget, and expenses for all categories. Lastly, the user can choose to either continue to re-use the functions again or quit the program.
+There are 5 main steps in creating a new budget. <br>Step 1: the user chooses the month they would like to set a budget for. <br>Step 2: the user enters in the name they would like to save the file as (do not include '.csv' at the end of your file). <br>Step 3: the user enters in how many categories they would like to set (only postive whole numbers are accepted). <br>Step 4: the user then sets the category name, budget, and expenses for all categories. <br>Step 5: the user can choose to either continue to re-use the functions again or quit the program.
 
 # Project Goals
 1) CSV file generated (Complete)
